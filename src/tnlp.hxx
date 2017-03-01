@@ -720,6 +720,21 @@ namespace roboptim
       solverState_.constraintViolation ()
         = ip_cq->unscaled_curr_nlp_constraint_violation (Ipopt::NORM_MAX);
 
+      solverState_.parameters()["ipopt.dual_inf_tol"].value
+        = ip_cq->unscaled_curr_dual_infeasibility (Ipopt::NORM_MAX);
+      solverState_.parameters()["ipopt.dual_inf_tol"].description
+        = "Unscaled dual infeasibility";
+
+      solverState_.parameters()["ipopt.compl_inf_tol"].value
+        = ip_cq->unscaled_curr_complementarity (0., Ipopt::NORM_MAX);
+      solverState_.parameters()["ipopt.compl_inf_tol"].description
+        = "Unscaled complementarity conditions";
+
+      solverState_.parameters()["ipopt.nlp_error"].value
+        = ip_cq->unscaled_curr_nlp_error ();
+      solverState_.parameters()["ipopt.nlp_error"].description
+        = "Unscaled NLP error";
+
       // handle extra relevant parameters
       solverState_.parameters()["ipopt.mode"].value =
 	(mode == RegularMode)? std::string ("RegularMode") : std::string ("RestorationPhaseMode");
